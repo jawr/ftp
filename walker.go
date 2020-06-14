@@ -26,13 +26,10 @@ type item struct {
 // which will then be available through the Path, Stat, and Err methods.
 // It returns false when the walk stops at the end of the tree.
 func (w *Walker) Next() bool {
-	var isRoot bool
 	if w.cur == nil {
 		w.cur = &item{
 			path: strings.Trim(w.root, string(os.PathSeparator)),
 		}
-
-		isRoot = true
 	}
 
 	entries, err := w.serverConn.List(w.cur.path)
@@ -40,7 +37,6 @@ func (w *Walker) Next() bool {
 	if err == nil {
 		if len(entries) == 0 {
 			w.cur.err = fmt.Errorf("no such file or directory: %s", w.cur.path)
-
 			return false
 		}
 
