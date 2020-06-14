@@ -44,12 +44,6 @@ func (w *Walker) Next() bool {
 			return false
 		}
 
-		if isRoot && len(entries) == 1 && entries[0].Type == EntryTypeFile {
-			w.cur.err = fmt.Errorf("root is not a directory: %s", w.cur.path)
-
-			return false
-		}
-
 		for i, entry := range entries {
 			if entry.Name == "." || (i == 0 && entry.Type == EntryTypeFile) {
 				entry.Name = path.Base(w.cur.path)
